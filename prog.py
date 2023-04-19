@@ -16,8 +16,11 @@ def print_menu():
     """)
 
 def read_notes():
-    with open(file_path, 'r', encoding='utf8') as open_book:
+    try:
+        with open('notes.json', 'r', encoding='utf8') as open_book:
             notes = json.load(open_book)
+    except FileNotFoundError:
+        notes = []
     return notes
 
 def save_notes(notes):
@@ -27,10 +30,10 @@ def save_notes(notes):
 def add_note():
     title = (input('Введите заголовок заметки: ').title())
     body = (input('Введите текст заметки: ').title())
-    timestamp = datetime.datetime.now().replace(microsecond=0)
-    note = {'id': len(read_notes()) + 1, 'title': title, 'body': body, 'timestamp': timestamp}
-    read_notes().append(note)
-    save_notes(read_notes())
+    datatime = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    note = {'id': len(notes) + 1, 'title': title, 'body': body, 'datatime': datatime}
+    notes.append(note)
+    save_notes(notes)
     print('Заметка добавлена.')
 
 def tasks(task):
@@ -41,7 +44,7 @@ def tasks(task):
    else:
     match task:
         case 1: ## Добавить заметку
-            ##TBA
+            add_note()
             print_menu()
             tasks(int(input('Введите номер задачи от 1 до 5: ')))   
         case 2: ## Вывести все заметки
@@ -58,5 +61,6 @@ def tasks(task):
             tasks(int(input('Введите номер задачи от 1 до 5: ')))
 
 file_path = "notebook.json"
+notes = read_notes()
 print_menu()
 tasks(int(input('Введите номер задачи от 1 до 5: ')))
