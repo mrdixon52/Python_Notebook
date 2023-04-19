@@ -14,3 +14,15 @@ def print_menu():
     5 - Выход\n  
     ----------------------------------------------------------- \n 
     """)
+
+def read_notes():
+    with open(file_path, 'r', encoding='utf8') as open_book:
+            notes = json.load(open_book)
+    return notes
+
+def save_notes(notes):
+    with open(file_path, 'w', encoding='utf8') as open_book:
+        json.dump(notes, open_book, indent=4)
+
+
+file_path = "notebook.json"
