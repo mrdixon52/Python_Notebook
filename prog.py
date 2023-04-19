@@ -30,11 +30,21 @@ def save_notes(notes):
 def add_note():
     title = (input('Введите заголовок заметки: ').title())
     body = (input('Введите текст заметки: ').title())
+    idd = search_free_id()
     datatime = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    note = {'id': len(notes) + 1, 'title': title, 'body': body, 'datatime': datatime}
+    note = {'id': idd, 'title': title, 'body': body, 'datatime': datatime}
     notes.append(note)
     save_notes(notes)
     print('Заметка добавлена!')
+
+def search_free_id():
+    id_new = 1
+    count = 2
+    for note in notes:
+        if (count != note['id']):
+            id_new = count
+        count += 1
+    return id_new
 
 def edit_note_id():
     note_id = int(input('Введите ID заметки для редактирования: '))
@@ -89,6 +99,18 @@ def show_notes():
         print(f' {note["body"]}\n', end='')
         print(f' {note["datatime"]}\n')
 
+def delete_note():
+    note_id = int(input('Введите id заметки для удаления: '))
+    for note in notes:
+        if note['id'] == note_id:
+            notes.remove(note)
+            save_notes(notes)
+            print('Заметка удалена.')
+            break
+    else:
+        print('Заметка с таким id не найдена.')
+        delete_note()
+
 def tasks(task):
    if task > 5: 
        print('Вы ошиблись!')
@@ -109,7 +131,7 @@ def tasks(task):
             print_menu()
             tasks(int(input('Введите номер задачи от 1 до 5: ')))
         case 4: ## Удалить заметку
-            ##TBA
+            delete_note()
             print_menu()
             tasks(int(input('Введите номер задачи от 1 до 5: ')))
 
