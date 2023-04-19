@@ -34,7 +34,60 @@ def add_note():
     note = {'id': len(notes) + 1, 'title': title, 'body': body, 'datatime': datatime}
     notes.append(note)
     save_notes(notes)
-    print('Заметка добавлена.')
+    print('Заметка добавлена!')
+
+def edit_note_id():
+    note_id = int(input('Введите ID заметки для редактирования: '))
+    for note in notes:
+        if note['id'] == note_id:
+            title = input('Введите новый заголовок заметки: ')
+            body = input('Введите новый текст заметки: ')
+            note['title'] = title
+            note['body'] = body
+            note['datatime'] = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            save_notes(notes)
+            print('Заметка отредактирована!')
+            break
+    else:
+        print('Заметка с таким ID не найдена. Попробуйте снова!')
+        edit_note_id()
+
+def edit_note_title():
+    note_title = input('Введите заголовок заметки для редактирования: ')
+    for note in notes:
+        if note['title'] == note_title:
+            title = input('Введите новый заголовок заметки: ')
+            body = input('Введите новый текст заметки: ')
+            note['title'] = title
+            note['body'] = body
+            note['datatime'] = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            save_notes(notes)
+            print('Заметка отредактирована!')
+            break
+    else:
+        print('Заметка с таким заголовком не найдена. Попробуйте снова!')
+        edit_note_title()
+
+def edit_note():
+    print("""
+        \n Вы хотите найти заметку по id или заголовку?\n 
+        1 - По id
+        2 - По заголовку
+        """)
+    task = (int(input('Введите номер задачи: ')))
+    if task == 1:
+        edit_note_id()
+    elif task == 2:
+        edit_note_title
+    else:
+        print("Вы ошиблись!")
+        edit_note()
+
+def show_notes():
+    for note in notes:
+        print(f' {note["id"]}. {note["title"]} \n', end='')
+        print(f' {note["body"]}\n', end='')
+        print(f' {note["datatime"]}\n')
 
 def tasks(task):
    if task > 5: 
@@ -48,11 +101,11 @@ def tasks(task):
             print_menu()
             tasks(int(input('Введите номер задачи от 1 до 5: ')))   
         case 2: ## Вывести все заметки
-            ##TBA
+            show_notes()
             print_menu()
             tasks(int(input('Введите номер задачи от 1 до 5: ')))
         case 3: ## Найти и отредактировать заметку
-            ##TBA
+            edit_note()
             print_menu()
             tasks(int(input('Введите номер задачи от 1 до 5: ')))
         case 4: ## Удалить заметку
