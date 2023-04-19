@@ -24,9 +24,20 @@ def save_notes(notes):
     with open(file_path, 'w', encoding='utf8') as open_book:
         json.dump(notes, open_book, indent=4)
 
+def add_note():
+    title = (input('Введите заголовок заметки: ').title())
+    body = (input('Введите текст заметки: ').title())
+    timestamp = datetime.datetime.now().replace(microsecond=0)
+    note = {'id': len(read_notes()) + 1, 'title': title, 'body': body, 'timestamp': timestamp}
+    read_notes().append(note)
+    save_notes(read_notes())
+    print('Заметка добавлена.')
+
 def tasks(task):
-   if task > 5: print('Вы ошиблись')
-   if task == 5: print('До свидания!')
+   if task > 5: 
+       print('Вы ошиблись!')
+       tasks(int(input('Введите номер задачи от 1 до 5: ')))
+   elif task == 5: print('До свидания!')
    else:
     match task:
         case 1: ## Добавить заметку
@@ -44,9 +55,8 @@ def tasks(task):
         case 4: ## Удалить заметку
             ##TBA
             print_menu()
-            tasks(int(input('Введите номер задачи от 1 до 5: ')))          
-        case _:
-            print('Введите значение из меню: ')
             tasks(int(input('Введите номер задачи от 1 до 5: ')))
 
 file_path = "notebook.json"
+print_menu()
+tasks(int(input('Введите номер задачи от 1 до 5: ')))
